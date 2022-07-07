@@ -1,0 +1,16 @@
+### Send GET the health request
+GET http://localhost:4000/v1/healthcheck
+Accept: application/json
+
+### Send GET the movie by id request
+GET http://localhost:4000/v1/movies/1
+Accept: application/json
+
+### Send POST request to create a movie
+POST http://localhost:4000/v1/movies
+Content-Type: application/json
+
+{
+  "id": 999,
+  "value": "content"
+}
