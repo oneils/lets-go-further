@@ -17,3 +17,9 @@ create role greenlight with login password 'greenlight';
 -- adds a case-insensitive character string type to PostgreSQL
 create extension if not exists citext;
 ```
+
+## Add posrtgres dsn to env
+
+```bash
+ GREENLIGHT_DB_DSN='postgres://greenlight:greenlight@localhost/greenlight?sslmode=disable'
+```
