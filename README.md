@@ -79,3 +79,9 @@ Force the DB version to a specific version:
 ```bash
 migrate -path=./migrations -database=$EXAMPLE_DSN force 1
 ```
+
+Send a bunch concurrent request to update a movie to verify there is not data races:
+
+```bash
+xargs -I % -P8 curl -X PATCH -d '{"runtime": "97 mins"}' "localhost:4000/v1/movies/4" < <(printf '%s\n' {1..8})
+```
