@@ -46,3 +46,17 @@ Content-Type: application/json
 ### Send DELETE request to delete a movie
 DELETE http://localhost:4000/v1/movies/2
 Accept: application/json
+
+### Fetch list of movies without filtering and sorting
+GET http://localhost:4000/v1/movies
+Accept: application/json
+
+### Fetch list of movies with filtering, sorting and pagination
+GET http://localhost:4000/v1/movies?page=1&limit=10&sort=title&order=asc
+Accept: application/json
+
+
+### Fetch list of movies with filtering, sorting and pagination
+GET http://localhost:4000/v1/movies?title=godfather&genres=crime,drama&page=1&page_size=5&sort=-year&order=asc
+Accept: application/json
+

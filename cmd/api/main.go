@@ -5,11 +5,12 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	"github.com/oneils/lets-go-further/internal/data"
 	"log"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/oneils/lets-go-further/internal/data"
 
 	_ "github.com/lib/pq"
 )
@@ -59,9 +60,6 @@ func main() {
 		logger: logger,
 		models: data.NewModels(db),
 	}
-
-	mux := http.NewServeMux()
-	mux.HandleFunc("/v1/healthcheck", app.healthcheckHandler)
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", cfg.port),
