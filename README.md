@@ -86,3 +86,11 @@ Send a bunch concurrent request to update a movie to verify there is not data ra
 ```bash
 xargs -I % -P8 curl -X PATCH -d '{"runtime": "97 mins"}' "localhost:4000/v1/movies/4" < <(printf '%s\n' {1..8})
 ```
+
+## Rate limiting
+
+To test rate limits work:
+
+```bash
+for i in {1..6}; do curl http://localhost:4000/v1/healthcheck; done
+```

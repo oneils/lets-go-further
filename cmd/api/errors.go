@@ -56,3 +56,8 @@ func (app *application) editConflictResponse(w http.ResponseWriter, r *http.Requ
 	message := "the resource you are trying to edit has been modified by another user. Please try again later"
 	app.errorResponse(w, r, http.StatusConflict, message)
 }
+
+func (app *application) rateLimitExceededResponse(w http.ResponseWriter, r *http.Request) {
+	message := "you have exceeded the rate limit for this resource"
+	app.errorResponse(w, r, http.StatusTooManyRequests, message)
+}
