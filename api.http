@@ -11,8 +11,8 @@ POST http://localhost:4000/v1/movies
 Content-Type: application/json
 
 {
-  "title": "The Breakfast Club",
-  "year": 1986,
+  "title": "The Breakfast Club 22",
+  "year": 2021,
   "runtime": "96 mins",
   "genres": [
     "drama"
@@ -60,3 +60,6 @@ Accept: application/json
 GET http://localhost:4000/v1/movies?title=godfather&genres=crime,drama&page=1&page_size=5&sort=-year&order=asc
 Accept: application/json
 
+### Fetch list of movies with filtering, sorting and pagination
+GET http://localhost:4000/v1/movies?page_size=5&page=1
+Accept: application/json
