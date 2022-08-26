@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"github.com/oneils/lets-go-further/internal/data"
 	"github.com/oneils/lets-go-further/internal/validator"
 	"net/http"
@@ -49,6 +50,13 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 			app.serverErrorResponse(w, r, err)
 		}
 
+		return
+	}
+
+	err = app.mailer.Send(user.Email, "user_welcome.tmpl", user)
+	if err != nil {
+		fmt.Printf("### error while sending email to %s\n", user.Email)
+		app.serverErrorResponse(w, r, err)
 		return
 	}
 
