@@ -3,7 +3,6 @@ package mailer
 import (
 	"bytes"
 	"embed"
-	"fmt"
 	"github.com/go-mail/mail/v2"
 	"html/template"
 	"time"
@@ -54,8 +53,6 @@ func (m Mailer) Send(recipient, templateFile string, data any) error {
 	if err != nil {
 		return err
 	}
-
-	fmt.Printf("### sending email to %s\n", recipient)
 
 	msg := mail.NewMessage()
 	msg.SetHeader("To", recipient)
