@@ -34,8 +34,8 @@ func (app *application) serve() error {
 
 		// listen for SIGINT or SIGTERM signals and relay them to the quit channel.
 		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-
 		s := <-quit
+
 		app.logger.PrintInfo("shutting down the server", map[string]string{
 			"signal": s.String(),
 		})
@@ -43,8 +43,19 @@ func (app *application) serve() error {
 		ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 		defer cancel()
 
-		// Shutdown returns an error when can't complete the shutdown gracefully.
-		shutdownError <- srv.Shutdown(ctx)
+		err := srv.Shutdown(ctx)
+		if err != nil {
+			shutdownError <- err
+		}
+
+		app.logger.PrintInfo("completing background tasks", map[string]string{
+			"addr": srv.Addr,
+		})
+
+		// blocking until the background goroutines have finished
+		// return nil on the shutdownError channel, to indicate that the shutdown completed without
+		app.wg.Wait()
+		shutdownError <- nil
 	}()
 
 	app.logger.PrintInfo("starting server", map[string]string{

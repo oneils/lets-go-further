@@ -7,6 +7,7 @@ import (
 	"github.com/oneils/lets-go-further/internal/jsonlog"
 	"github.com/oneils/lets-go-further/internal/mailer"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/oneils/lets-go-further/internal/data"
@@ -44,6 +45,7 @@ type application struct {
 	logger *jsonlog.Logger
 	models data.Models
 	mailer mailer.Mailer
+	wg     sync.WaitGroup
 }
 
 func main() {
