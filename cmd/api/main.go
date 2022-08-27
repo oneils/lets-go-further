@@ -7,6 +7,7 @@ import (
 	"github.com/oneils/lets-go-further/internal/jsonlog"
 	"github.com/oneils/lets-go-further/internal/mailer"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -37,6 +38,10 @@ type config struct {
 		username string
 		password string
 		sender   string
+	}
+
+	cors struct {
+		trustedOrigins []string
 	}
 }
 
@@ -70,6 +75,15 @@ func main() {
 	flag.StringVar(&cfg.smtp.username, "smtp-username", "50f54cf690e975", "SMTP user")
 	flag.StringVar(&cfg.smtp.password, "smtp-password", "8a45261f014bef", "SMTP password")
 	flag.StringVar(&cfg.smtp.sender, "smtp-sender", "Greenlight <no-reply@devbug.info>", "SMTP sender")
+
+	// CROSS Origin
+	// Importantly, if the -cors-trusted-origins flag is not present, contains the empty
+	// string, or contains only whitespace, then strings.Fields() will return an empty
+	// []string slice.
+	flag.Func("cors-trusted-origins", "Trusted CORS origins (space separated)", func(val string) error {
+		cfg.cors.trustedOrigins = strings.Fields(val)
+		return nil
+	})
 
 	flag.Parse()
 
