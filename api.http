@@ -2,6 +2,12 @@
 GET http://localhost:4000/v1/healthcheck
 Accept: application/json
 
+
+### Send GET the health request with authentication
+GET http://localhost:4000/v1/healthcheck
+Content-Type: application/json
+Authorization: Bearer 3ABC7QHBXZHQ4Z5EGLEYANYDHQ
+
 ### Send GET the movie by id request
 GET http://localhost:4000/v1/movies/4
 Accept: application/json

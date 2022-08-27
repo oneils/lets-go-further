@@ -15,6 +15,8 @@ var (
 	ErrDuplicateEmail = errors.New("duplicate email")
 )
 
+var AnonymousUser = &User{}
+
 type User struct {
 	ID        int64     `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
@@ -28,6 +30,11 @@ type User struct {
 type password struct {
 	plaintext *string
 	hash      []byte
+}
+
+// IsAnonymous checks if a User instance is the AnonymousUser: an inactivated user with no ID, name, email or password
+func (u *User) IsAnonymous() bool {
+	return u == AnonymousUser
 }
 
 func (p *password) Set(plaintextPassword string) error {
