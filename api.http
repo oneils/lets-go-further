@@ -70,7 +70,25 @@ POST http://localhost:4000/v1/users
 Content-Type: application/json
 
 {
-  "name": "Alice Smith",
-  "email": "alice@example.com",
+  "name": "Bob2 Smith",
+  "email": "bob31@example.com",
   "password": "password"
 }
+
+### Activate User
+PUT http://localhost:4000/v1/users/activated
+Content-Type: application/json
+
+{
+  "token": "LRKZAMNJ52CGZCLEQ5YXRXGK6E"
+}
+
+### Generate Token for a User
+POST http://localhost:4000/v1/tokens/authentication
+Content-Type: application/json
+
+{
+  "email": "bob31@example.com",
+  "password": "password"
+}
+
