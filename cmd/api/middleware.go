@@ -156,7 +156,7 @@ func (app *application) requireActivatedUser(next http.HandlerFunc) http.Handler
 	return app.requireAuthenticatedUser(fn)
 }
 func (app *application) requireAuthenticatedUser(next http.HandlerFunc) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
 		user := app.contextGetUser(r)
 
 		if user.IsAnonymous() {
@@ -165,5 +165,27 @@ func (app *application) requireAuthenticatedUser(next http.HandlerFunc) http.Han
 		}
 
 		next.ServeHTTP(w, r)
-	})
+	}
+}
+
+// requirePermission ensures that the request is from an authenticated (non-anonymous), activated user, who has a specific permission.
+func (app *application) requirePermission(code string, next http.HandlerFunc) http.HandlerFunc {
+
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		user := app.contextGetUser(r)
+		permissions, err := app.models.Permissions.GetAllForUser(user.ID)
+		if err != nil {
+			app.serverErrorResponse(w, r, err)
+			return
+		}
+
+		if !permissions.Include(code) {
+			app.notPermittedResponse(w, r)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	}
+
+	return app.requireActivatedUser(fn)
 }
