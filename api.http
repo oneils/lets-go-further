@@ -11,6 +11,7 @@ Authorization: Bearer 3ABC7QHBXZHQ4Z5EGLEYANYDHQ
 ### Send GET the movie by id request
 GET http://localhost:4000/v1/movies/4
 Accept: application/json
+Authorization: Bearer RKZOO7BLGC5UND2EPLLQRPUBF4
 
 ### Send POST request to create a movie
 POST http://localhost:4000/v1/movies
@@ -94,7 +95,7 @@ POST http://localhost:4000/v1/tokens/authentication
 Content-Type: application/json
 
 {
-  "email": "bob31@example.com",
+  "email": "bob2@example.com",
   "password": "password"
 }
 
