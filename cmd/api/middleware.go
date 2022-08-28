@@ -4,11 +4,13 @@ import (
 	"errors"
 	"expvar"
 	"fmt"
+	"github.com/felixge/httpsnoop"
 	"github.com/oneils/lets-go-further/internal/data"
 	"github.com/oneils/lets-go-further/internal/validator"
 	"golang.org/x/time/rate"
 	"net"
 	"net/http"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -222,18 +224,22 @@ func (app *application) metrics(next http.Handler) http.Handler {
 	totalRequestReceived := expvar.NewInt("total_request_received")
 	totalResponsesSent := expvar.NewInt("total_responses_sent")
 	totalProcessingTimeMicroseconds := expvar.NewInt("total_processing_time_μs")
+	totalResponsesSentByStatus := expvar.NewMap("total_responses_sent_by_status")
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		start := time.Now()
-
 		totalRequestReceived.Add(1)
 
-		next.ServeHTTP(w, r)
+		metrics := httpsnoop.CaptureMetrics(next, w, r)
 
 		// On the way back up the middleware chain, increment the number of responses sent by 1.
 		totalResponsesSent.Add(1)
 
-		duration := time.Since(start).Microseconds()
-		totalProcessingTimeMicroseconds.Add(duration)
+		// Get the request processing time in microseconds from httpsnoop and increment // the cumulative processing time.
+		totalProcessingTimeMicroseconds.Add(metrics.Duration.Microseconds())
+
+		// Use the Add() method to increment the count for the given status code by 1.
+		// Note that the expvar map is string-keyed, so we need to use the strconv.Itoa()
+		//function to convert the status code (which is an integer) to a string.
+		totalResponsesSentByStatus.Add(strconv.Itoa(metrics.Code), 1)
 	})
 }
