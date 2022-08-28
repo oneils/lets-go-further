@@ -15,7 +15,8 @@
 # vendor/
 
 .vscode/
-
 .idea/
 
 .envrc
+
+bin/
