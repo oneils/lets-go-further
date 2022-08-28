@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"expvar"
 	"fmt"
 	"github.com/oneils/lets-go-further/internal/data"
 	"github.com/oneils/lets-go-further/internal/validator"
@@ -214,5 +215,25 @@ func (app *application) enableCORS(next http.Handler) http.Handler {
 		}
 
 		next.ServeHTTP(w, r)
+	})
+}
+
+func (app *application) metrics(next http.Handler) http.Handler {
+	totalRequestReceived := expvar.NewInt("total_request_received")
+	totalResponsesSent := expvar.NewInt("total_responses_sent")
+	totalProcessingTimeMicroseconds := expvar.NewInt("total_processing_time_μs")
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+
+		totalRequestReceived.Add(1)
+
+		next.ServeHTTP(w, r)
+
+		// On the way back up the middleware chain, increment the number of responses sent by 1.
+		totalResponsesSent.Add(1)
+
+		duration := time.Since(start).Microseconds()
+		totalProcessingTimeMicroseconds.Add(duration)
 	})
 }
