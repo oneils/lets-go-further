@@ -7,8 +7,8 @@ import (
 	"github.com/felixge/httpsnoop"
 	"github.com/oneils/lets-go-further/internal/data"
 	"github.com/oneils/lets-go-further/internal/validator"
+	"github.com/tomasen/realip"
 	"golang.org/x/time/rate"
-	"net"
 	"net/http"
 	"strconv"
 	"strings"
@@ -62,11 +62,7 @@ func (app *application) rateLimit(next http.Handler) http.Handler {
 
 		if app.config.limiter.enabled {
 			// Get the client IP address from the request.
-			ip, _, err := net.SplitHostPort(r.RemoteAddr)
-			if err != nil {
-				app.serverErrorResponse(w, r, err)
-				return
-			}
+			ip := realip.FromRequest(r)
 
 			mu.Lock()
 
