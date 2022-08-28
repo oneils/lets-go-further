@@ -98,5 +98,5 @@ for i in {1..6}; do curl http://localhost:4000/v1/healthcheck; done
 ## Run migration via makefile
 
 ```bash
-make migration name=create_example_table
+make db/migrations/new name=create_example_table
 ```
