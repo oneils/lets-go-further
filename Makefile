@@ -1,3 +1,5 @@
+include .envrc
+
 ## help: print this help message
 .PHONY: help
 help:
@@ -11,7 +13,7 @@ confirm:
 ## run/api: run the cmd/api application
 .PHONY: run/api
 run/api:
-	@ go run ./cmd/api -database ${GREENLIGHT_DB_DSN}
+	@ go run ./cmd/api -db-dsn=${GREENLIGHT_DB_DSN}
 
 # Include confirm as prerequisite.
 ## db/migrations/up: apply all up database migrations
