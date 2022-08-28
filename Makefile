@@ -1,7 +1,11 @@
+confirm:
+	@echo -n 'Are you sure? [y/N] ' && read ans && [ $${ans:-N} = y ]
+
 run/api:
 	@ go run ./cmd/api -database ${GREENLIGHT_DB_DSN}
 
-db/migrations/up:
+# Include confirm as prerequisite.
+db/migrations/up: confirm
 	@echo 'Running up migrations...'
 	migrate -path ./migrations -database ${GREENLIGHT_DB_DSN} up
 
