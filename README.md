@@ -100,3 +100,15 @@ for i in {1..6}; do curl http://localhost:4000/v1/healthcheck; done
 ```bash
 make db/migrations/new name=create_example_table
 ```
+
+## Install staticcheck for additional veirifications
+
+```bash
+go install honnef.co/go/tools/cmd/staticcheck@latest
+```
+
+Make sure `GOPATH` is added to the system `PATH` (e.g. in the `~/.zshrc`:
+
+```bash
+ export PATH=$PATH:$(go env GOPATH)/bin
+```

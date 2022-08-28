@@ -82,7 +82,7 @@ func (m TokenModel) New(userID int64, ttl time.Duration, scope string) (*Token, 
 	}
 
 	err = m.Insert(token)
-	return token, nil
+	return token, err
 }
 
 // Insert adds the data for a specific token to the tokens table.

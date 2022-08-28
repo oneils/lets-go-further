@@ -30,7 +30,7 @@ func (app *application) serve() error {
 
 	go func() {
 		// a quit channel which carries a signal to stop the server.
-		quit := make(chan os.Signal)
+		quit := make(chan os.Signal, 1)
 
 		// listen for SIGINT or SIGTERM signals and relay them to the quit channel.
 		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
